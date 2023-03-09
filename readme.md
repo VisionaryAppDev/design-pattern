@@ -463,6 +463,80 @@ The reason for having an Invoker class is to separate the responsibility of invo
 In a Spring Boot application, the Invoker class can be implemented as a service or a controller, depending on the context in which the Command pattern is being used. For example, if the Command pattern is being used to implement an undo/redo functionality, the Invoker class might be implemented as a controller that listens to user input and executes the appropriate Command object's execute() method. On the other hand, if the Command pattern is being used to perform some long-running background operation, the Invoker class might be implemented as a Spring service that runs the command asynchronously.
 
 
+### State
+The state pattern is a behavioral design pattern that allows an object to change its behavior when its internal state changes. It involves encapsulating different behaviors into separate state classes, and the context object can delegate to the current state object to perform the appropriate behavior based on its internal state.
+
+The state pattern is useful when you have an object that behaves differently based on its internal state, and when adding new states or behaviors can be done easily without affecting the existing code. It is also useful when you have a large conditional block that depends on the internal state of an object, as it can be refactored into separate state classes.
+
+A good example for the state pattern is a traffic light. A traffic light changes its behavior based on its current state (red, yellow, green). Each state (red, yellow, green) has its own behavior (stop, prepare to stop, go), and the traffic light delegates to the current state to perform the appropriate behavior.
+
+Some sample use cases for the state pattern include:
+- A vending machine that behaves differently based on its current state (e.g. no money inserted, money inserted but no selection made, selection made but no change given)
+- A game character that has different behaviors based on its current state (e.g. standing, walking, running, jumping)
+- An ATM machine that behaves differently based on the user's current state (e.g. idle, card inserted, PIN entered, transaction in progress)
+- When the phone is unlocked, pressing buttons leads to executing various functions.
+- When the phone is locked, pressing any button leads to the unlock screen.
+- When the phone’s charge is low, pressing any button shows the charging screen.
+
+
+Imagine that we have a Document class. A document can be in one of three states: Draft, Moderation and Published. The publish method of the document works a little bit differently in each state:
+- In Draft, it moves the document to moderation.
+- In Moderation, it makes the document public, but only if the current user is an administrator.
+-  In Published, it doesn’t do anything at all.
+![img](resources/state-1.png)
+
+In Java, the state pattern can be implemented using interfaces or abstract classes to represent the different states, and a context class that maintains a reference to the current state object. The context class can delegate to the current state object to perform the appropriate behavior. Here's a simple example using Java:
+
+
+```
+public interface State {
+    void handle(Context context);
+}
+```
+
+```
+public class StateA implements State {
+    @Override
+    public void handle(Context context) {
+        // Behavior for state A
+        // Do sth (eg, stop music and then update the state) and then toggle state to B
+        context.setState(new StateB());
+    }
+}
+
+```
+
+```
+public class StateB implements State {
+    @Override
+    public void handle(Context context) {
+        // Behavior for state B
+        // Do sth (eg, start music and then update the state) and then toggle state to A
+        context.setState(new StateA());
+    }
+}
+
+```
+
+```
+public class Context {
+    private State currentState;
+
+    public Context(State initialState) {
+        this.currentState = initialState;
+    }
+
+    public void setState(State newState) {
+        this.currentState = newState;
+    }
+
+    // The Action button that will perform specific task based on current state
+    public void handleRequest() {
+        this.currentState.handle(this);
+    }
+}
+```
+
 
 ## READ
 - [When to use the Bridge pattern and how is it different from the Adapter pattern?](https://stackoverflow.com/questions/319728/when-to-use-the-bridge-pattern-and-how-is-it-different-from-the-adapter-pattern)
