@@ -43,10 +43,10 @@ The Factory Method is a creational design pattern that defines an interface for 
 
 A common use case for the Factory Method pattern is when you need to create objects that share a common interface or base class, but may differ in the specific implementation details. Instead of tightly coupling your code to these implementations, you can use a factory to create the objects based on some condition, parameter, or configuration.
 
-![example](/home/norin/Desktop/design-pattern/resources/factory-1.png)
+![example](resources/factory-1.png)
 
 ---
-![example](/home/norin/Desktop/design-pattern/resources/factory-2.png)
+![example](resources/factory-2.png)
 
 
 Example 1:
