@@ -8,33 +8,33 @@ References:
 # Table of Content
 ## [Creational Patterns](#creational-patterns-2)
 1. [Factory Method](#factory-method) 
-2. [Abstact Factory]() 
-3. [Builder]() 
-4. [Prototype]() 
-5. [Singleton]() 
+2. [Abstact Factory](#abstract-factory)
+3. [Builder](#builder)
+4. [Prototype](#prototype)
+5. [Singleton](#singleton)
 
 
 ## [Structural Patterns](#structural-patterns-2)
-1. [Adapter]()
-2. [Bridge]()
-3. [Composite]()
-4. [Decorator]()
-5. [Facade]()
-6. [Flyweight]()
-7. [Proxy]()
+1. [Adapter](#adapter)
+2. [Bridge](#bridge)
+3. [Composite](#composite)
+4. [Decorator](#decorator)
+5. [Facade](#facade)
+6. [Flyweight](#flyweight)
+7. [Proxy](#proxy)
 
 
 ## [Behavioral Patterns](#)
-1. [Chian of Responsibility]()
-2. [Command]()
-3. [Iterator]()
-4. [Mediator]()
-5. [Memeto]()
-6. [Observer]()
-7. [State]()
-8. [Strategy]()
-9. [Template Method]()
-10. [Visitor]()
+1. [Chain of Responsibility](#chain-of-responsibility)
+2. [Command](#command)
+3. [Iterator](#iterator)
+4. [Mediator](#mediator)
+5. [Memeto](#memeto)
+6. [Observer](#observer)
+7. [State](#state)
+8. [Strategy](#stategy)
+9. [Template Method](#template-method)
+10. [Visitor](#visitor)
 
 ## Creational Patterns
 ### Factory Method
@@ -125,6 +125,7 @@ public class LogisticFactory {
 
 
 ## Structural Patterns
+### Bridge
 The Bridge Design Pattern is a structural design pattern that decouples an abstraction from its implementation, allowing both to vary independently. It involves creating two separate abstraction and implementation hierarchies, and connecting them using a bridge interface. This allows the implementation to be changed or extended without affecting the abstraction, and vice versa.
 
 The Bridge Design Pattern is useful when there are multiple variations in functionality, and the implementation details may change frequently. By separating the abstraction from the implementation, the Bridge pattern allows for more flexibility and scalability in the codebase.
@@ -254,6 +255,53 @@ public class Main {
     }
 }
 ```
+
+### Facade
+The Facade pattern is a software design pattern that provides a simplified interface to a complex system of classes, interfaces, and APIs. It hides the complexity of the system and provides a simpler interface that the client can use to interact with the system.
+
+The Facade pattern is useful when you have a complex system that needs to be used by multiple clients or when you want to isolate the clients from the complexities of the system. It promotes loose coupling between the client and the system, which makes the system easier to modify and maintain.
+
+The Facade pattern is similar to a concierge at a hotel. The concierge provides a simplified interface to the complex system of services available in the hotel. The guests can use the concierge to book a taxi, reserve a table at a restaurant, or order room service without having to interact with the individual services directly.
+
+In software development, a Facade can be used to provide a simple interface to a complex system of objects or APIs. For example, in a web application, a Facade can be used to provide a simplified interface to a set of APIs that are used to access a database.
+
+Some of the use cases for the Facade pattern include:
+- Simplifying the interface to a complex system
+- Providing a layer of abstraction between the client and the system
+- Promoting loose coupling between the client and the system
+- Improving the maintainability and extensibility of the system
+
+An example of using the Facade pattern in a web application is to provide a simplified interface for accessing a database. Instead of exposing the full functionality of the database APIs to the client, the Facade can provide a set of simple CRUD (create, read, update, delete) operations that the client can use to interact with the database. This makes it easier for the client to use the database and also makes it easier to modify the database implementation without affecting the clients.
+
+Another example is providing a simplified interface for a complex system of objects or APIs in a software development framework. For example, in the Spring framework, the Spring JDBC Template class provides a simplified interface for accessing a database. It encapsulates the complexity of the JDBC API and provides a simpler and more intuitive API for interacting with the database.
+
+Suppose we have a complex system that includes several subsystems, each of which has its own set of classes and objects. To simplify the interaction with this system, we could create a facade class that provides a simplified interface to the subsystems.
+
+![example](resources/facade.png)
+
+```
+public class SystemFacade {
+    private SubsystemA subsystemA;
+    private SubsystemB subsystemB;
+    private SubsystemC subsystemC;
+
+    public SystemFacade() {
+        subsystemA = new SubsystemA();
+        subsystemB = new SubsystemB();
+        subsystemC = new SubsystemC();
+    }
+
+    public void doSomething() {
+        subsystemA.doSomething();
+        subsystemB.doSomething();
+        subsystemC.doSomething();
+    }
+}
+```
+
+
+
+
 
 
 ## READ
