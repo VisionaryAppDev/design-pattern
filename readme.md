@@ -836,6 +836,61 @@ public class Context {
 }
 ```
 
+### Template Method
+The Template Method pattern is a behavioral design pattern that defines a template of an algorithm in a base class and allows subclasses to override certain steps of the algorithm without changing its overall structure. In other words, it provides a skeleton of the algorithm, while letting subclasses provide concrete implementations for certain steps.
+
+The Template Method pattern is useful in situations where you want to implement a common algorithm that should work for all subclasses, but some steps of the algorithm may vary depending on the subclass. By using the Template Method pattern, you can avoid code duplication and make the code more flexible and maintainable.
+
+Some sample use cases for the Template Method pattern include:
+- Building a web application framework that provides a common structure for web pages, but allows customization of individual components such as header, footer, and content.
+- Implementing a game engine that provides a common game loop, but allows each game to define its own logic for updating game objects and rendering graphics.
+- Developing a data import/export tool that provides a common format for data, but allows customization of the input and output formats for each data source or destination.
+
+![img](resources/template-method-1.png)
+
+An example for the Template Method pattern could be a baking recipe. The recipe provides a template for baking a cake, but certain steps may vary depending on the specific type of cake being made. For example, the recipe may provide a step for adding flour, but the amount and type of flour may vary depending on the recipe for each type of cake.
+
+Let's say you're designing a game engine for a platformer game. You want to have a base class for all characters in the game, but you also want to allow for different types of characters (e.g. player character, enemy character, non-playable character) to have their own unique behaviors.
+
+You can use the template method pattern to define a base Character class with a template method for character behavior. Each subtype of the Character class can then implement their own behavior by overriding parts of the template method.
+
+For example, the PlayerCharacter class might override the jump() method to allow the player to jump higher than other characters, while the EnemyCharacter class might override the attack() method to deal more damage to the player.
+
+By using the template method pattern, you can provide a common interface for all characters in the game, while also allowing for each character to have its own unique behavior.
+
+```
+public abstract class AbstractClass {
+    /// Operate in specific other but allow to override
+    /// Specific operation definition
+    public final void templateMethod() {
+        operation1();
+        operation2();
+        operation3();
+    }
+
+    protected abstract void operation1();
+
+    protected abstract void operation2();
+
+    protected void operation3() {
+        // default implementation
+    }
+}
+```
+
+```
+public class ConcreteClass extends AbstractClass {
+    protected void operation1() {
+        // implementation for operation1
+    }
+
+    protected void operation2() {
+        // implementation for operation2
+    }
+}
+```
+In this example, AbstractClass is the base class that defines the template method templateMethod(), which calls three abstract methods: operation1(), operation2(), and operation3(). The ConcreteClass subclass extends AbstractClass and provides its own implementations for operation1() and operation2(), but uses the default implementation for operation3().
+
 
 ## READ
 - [When to use the Bridge pattern and how is it different from the Adapter pattern?](https://stackoverflow.com/questions/319728/when-to-use-the-bridge-pattern-and-how-is-it-different-from-the-adapter-pattern)
