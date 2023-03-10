@@ -491,6 +491,115 @@ In this example, RealRemoteApi is the actual implementation of the remote API in
 
 
 ## Behavioral Patterns
+### Chain of Responsibility
+The Chain of Responsibility pattern is a behavioral pattern that allows you to pass requests through a chain of handlers until one of them handles the request. Each handler has a reference to the next handler in the chain, forming a linked list of handlers. The request is passed through the chain until one handler can handle it or until the end of the chain is reached.
+
+The Chain of Responsibility pattern is useful when you have a set of handlers that can handle a request, but you don't know which one to use until runtime. It's also useful when you want to decouple the sender of a request from its receiver.
+
+A common example of the Chain of Responsibility pattern is in a web application that has multiple filters to process a request. Each filter checks the request for certain criteria and either handles the request or passes it to the next filter in the chain.
+
+Another example is in a customer service system, where customer complaints are handled by different levels of support personnel. A complaint is first handled by a lower level support agent, and if they can't resolve the issue, it's passed up the chain to a higher level support agent.
+
+An analogy for the Chain of Responsibility pattern is a customer support phone system, where the customer's request is routed through a series of prompts and menus until it reaches the appropriate support agent who can handle the request.
+
+In terms of implementation, each handler in the chain must have a method for handling the request and a reference to the next handler in the chain. The client code that creates the chain of handlers only needs to know about the first handler in the chain. The handler can either handle the request or pass it on to the next handler in the chain.
+
+Overall, the Chain of Responsibility pattern provides a flexible and extensible way to handle requests that can be handled by multiple handlers in a dynamic and efficient way.
+
+![img](resources/chain-of-responsibility-1.png)
+
+Imagine you're building a software for a bank. The bank has different levels of approval for loan applications based on the loan amount. If the loan amount is less than $10,000, it can be approved by the bank manager alone. If the amount is between $10,000 and $50,000, it needs approval from the bank manager as well as the regional manager. If it's more than $50,000, it needs approval from the bank manager, regional manager, and the head office.
+
+In this case, you can use the Chain of Responsibility pattern to create a chain of approvers. Each approver in the chain will check if they have the authority to approve the loan based on the loan amount. If they do, they will approve it and pass it on to the next approver in the chain. If they don't, they will simply pass it on to the next approver.
+```
+public abstract class LoanApprover {
+    protected LoanApprover nextApprover;
+
+    public void setNextApprover(LoanApprover nextApprover) {
+        this.nextApprover = nextApprover;
+    }
+
+    public abstract void processLoan(Loan loan);
+}
+```
+
+```
+public class BankManager extends LoanApprover {
+    public void processLoan(Loan loan) {
+        if (loan.getAmount() < 10000) {
+            System.out.println("Loan approved by Bank Manager");
+        } else if (nextApprover != null) {
+            nextApprover.processLoan(loan);
+        }
+    }
+}
+```
+
+```
+public class RegionalManager extends LoanApprover {
+    public void processLoan(Loan loan) {
+        if (loan.getAmount() < 50000) {
+            System.out.println("Loan approved by Regional Manager");
+        } else if (nextApprover != null) {
+            nextApprover.processLoan(loan);
+        }
+    }
+}
+```
+
+```
+public class HeadOffice extends LoanApprover {
+    public void processLoan(Loan loan) {
+        if (loan.getAmount() >= 50000) {
+            System.out.println("Loan approved by Head Office");
+        } else if (nextApprover != null) {
+            nextApprover.processLoan(loan);
+        }
+    }
+}
+```
+
+```
+public class Loan {
+    private double amount;
+
+    public Loan(double amount) {
+        this.amount = amount;
+    }
+
+    public double getAmount() {
+        return amount;
+    }
+}
+```
+
+```
+public class LoanApprovalChain {
+    public static void main(String[] args) {
+        LoanApprover bankManager = new BankManager();
+        LoanApprover regionalManager = new RegionalManager();
+        LoanApprover headOffice = new HeadOffice();
+        
+        /// Setup chain of approval.
+        /// Start from the lower to higher (manager -> regional -> HQ)
+        bankManager.setNextApprover(regionalManager);
+        regionalManager.setNextApprover(headOffice);
+
+        Loan loan1 = new Loan(5000);
+        bankManager.processLoan(loan1);
+
+        Loan loan2 = new Loan(25000);
+        bankManager.processLoan(loan2);
+
+        Loan loan3 = new Loan(75000);
+        bankManager.processLoan(loan3);
+    }
+}
+```
+In this example, we have three different LoanApprovers - BankManager, RegionalManager, and HeadOffice. We create a chain of approvers by setting the next approver for each approver. Finally, we create three different loans and pass them to the BankManager to be processed. The BankManager will check if they have the authority to approve the loan based on the loan amount, and if not, pass it on to the next approver in the chain.
+
+
+
 ### Command
 The Command pattern is a behavioral design pattern that encapsulates a request as an object, by letting you parameterize clients with different requests, queue or log requests, and support undoable operations.
 
