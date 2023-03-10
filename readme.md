@@ -199,6 +199,68 @@ public class Pizza {
 
 
 ## Structural Patterns
+### Adapter
+#### Definition
+The Adapter pattern is a design pattern that allows two incompatible interfaces to work together by wrapping an object around one of the interfaces to convert its interface into the other interface. In other words, it allows objects with incompatible interfaces to collaborate by translating one interface into another.
+
+The Adapter pattern is used when an existing system needs to work with other incompatible systems, or when an existing interface needs to be adapted to work with a new implementation. It allows for reuse of existing code, without having to modify it, and for the implementation of a new interface without having to modify the existing code.
+
+![img](resources/adapter-1.png)
+---
+![img](resources/adapter-2.png)
+
+#### Usecase
+ The Adapter pattern is the use of power adapters when travelling to different countries. The power adapter acts as an adapter between the power outlet (which has one interface) and the electronic device (which has a different interface). The adapter converts the interface of the power outlet to match the interface of the electronic device, allowing it to work in the new country.
+
+A real-world example of the Adapter pattern is the use of JDBC drivers in Java. JDBC drivers are used to allow Java applications to communicate with different database management systems. Each database management system has its own implementation of the database driver, which has a different interface. The JDBC driver acts as an adapter between the Java application and the database management system, translating the interface of the Java application to match the interface of the database management system.
+
+#### Example
+Suppose we have an existing system that calculates the total cost of an order in US dollars. However, a new requirement has come up that some customers want to see the cost of their orders in euros. To meet this requirement, we can use the adapter pattern to convert the US dollar amounts to euros.
+
+```
+public interface EuroCalculator {
+    double calculateEuroAmount();
+}
+```
+
+```
+public class DollarToEuroAdapter implements EuroCalculator {
+    private double dollarAmount;
+    
+    public DollarToEuroAdapter(double dollarAmount) {
+        this.dollarAmount = dollarAmount;
+    }
+    
+    public double calculateEuroAmount() {
+        // Conversion rate as of February 2023
+        double conversionRate = 0.81;
+        return dollarAmount * conversionRate;
+    }
+}
+```
+
+```
+public class Order {
+    private double totalCostInDollars;
+    
+    public double getTotalCostInDollars() {
+        return totalCostInDollars;
+    }
+    
+    public void setTotalCostInDollars(double totalCostInDollars) {
+        this.totalCostInDollars = totalCostInDollars;
+    }
+    
+    public double getTotalCostInEuros() {
+        EuroCalculator euroCalculator = new DollarToEuroAdapter(totalCostInDollars);
+        return euroCalculator.calculateEuroAmount();
+    }
+}
+```
+
+In this example, we used the adapter pattern to convert the existing US dollar calculation to euros without modifying the existing code. The DollarToEuroAdapter class adapts the EuroCalculator interface to the existing totalCostInDollars calculation. The Order class uses the adapter to calculate the euro amount of an order.
+
+
 ### Bridge
 #### Definition
 The Bridge Design Pattern is a structural design pattern that decouples an abstraction from its implementation, allowing both to vary independently. It involves creating two separate abstraction and implementation hierarchies, and connecting them using a bridge interface. This allows the implementation to be changed or extended without affecting the abstraction, and vice versa.
