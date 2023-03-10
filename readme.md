@@ -836,6 +836,190 @@ public class Context {
 }
 ```
 
+### Strategy
+The Strategy pattern is a behavioral design pattern that allows you to define a family of algorithms, encapsulate each one as an object, and make them interchangeable at runtime. This pattern enables the algorithm's behavior to be selected at runtime without changing the context class that uses it.
+
+The Strategy pattern is useful when you have a group of similar algorithms and need to swap them out based on the situation. It's particularly useful when you have a class with a single, massive conditional statement that is difficult to maintain or extend.
+
+A real-world example of the Strategy pattern is the sorting algorithm in a computer program. Different sorting algorithms can be used depending on the data set's size and structure. For example, quicksort may be used for larger sets, while insertion sort may be used for smaller sets.
+
+An analogy for the Strategy pattern is a toolbox. You can choose the appropriate tool for the job, and each tool has a different function. The tools are interchangeable and can be swapped out depending on the task at hand.
+
+Sample use cases for the Strategy pattern include:
+- Sorting algorithms in a computer program
+- Encryption and decryption algorithms in security software
+- Payment methods in an e-commerce application
+- Data validation rules in a form processing application
+
+![img](resources/strategy-1.png)
+
+In a nutshell, the Strategy pattern separates the algorithm from the class that uses it, making it easy to change the algorithm's behavior at runtime.
+
+Example 1:
+Suppose you're building a game that involves different types of characters, such as knights, archers, and mages. Each character has its own attack style and strength, but they all need to be able to attack their enemies. You can use the Strategy pattern to implement the attack behavior for each character type.
+
+```
+public interface AttackStrategy {
+    void attack();
+}
+```
+
+```
+public class SwordAttackStrategy implements AttackStrategy {
+    @Override
+    public void attack() {
+        System.out.println("Knight attacks with sword!");
+    }
+}
+```
+
+```
+public class BowAttackStrategy implements AttackStrategy {
+    @Override
+    public void attack() {
+        System.out.println("Archer attacks with bow!");
+    }
+}
+```
+
+```
+public class SpellAttackStrategy implements AttackStrategy {
+    @Override
+    public void attack() {
+        System.out.println("Mage attacks with spell!");
+    }
+}
+```
+
+```
+public class Character {
+    private AttackStrategy attackStrategy;
+
+    public Character(AttackStrategy attackStrategy) {
+        this.attackStrategy = attackStrategy;
+    }
+
+    public void attack() {
+        attackStrategy.attack();
+    }
+}
+```
+
+```
+Character knight = new Character(new SwordAttackStrategy());
+Character archer = new Character(new BowAttackStrategy());
+Character mage = new Character(new SpellAttackStrategy());
+
+knight.attack(); // outputs: "Knight attacks with sword!"
+archer.attack(); // outputs: "Archer attacks with bow!"
+mage.attack();   // outputs: "Mage attacks with spell!"
+```
+This example demonstrates how the Strategy pattern can be used to decouple an object's behavior from its class, allowing you to easily swap out different implementations of that behavior.
+
+Example 2:
+```
+// Context class
+public class ShoppingCart {
+    private List<Item> items;
+    private PaymentStrategy paymentStrategy;
+
+    public ShoppingCart() {
+        items = new ArrayList<Item>();
+    }
+
+    public void addItem(Item item) {
+        items.add(item);
+    }
+
+    public void removeItem(Item item) {
+        items.remove(item);
+    }
+
+    public double calculateTotal() {
+        double sum = 0;
+        for (Item item : items) {
+            sum += item.getPrice();
+        }
+        return sum;
+    }
+
+    public void setPaymentStrategy(PaymentStrategy paymentStrategy) {
+        this.paymentStrategy = paymentStrategy;
+    }
+
+    public void pay() {
+        double amount = calculateTotal();
+        paymentStrategy.pay(amount);
+    }
+}
+```
+
+```
+// Strategy interface
+public interface PaymentStrategy {
+    void pay(double amount);
+}
+```
+
+```
+// Concrete strategy classes
+public class CreditCardStrategy implements PaymentStrategy {
+    private String cardNumber;
+    private String cvv;
+    private String expirationDate;
+
+    public CreditCardStrategy(String cardNumber, String cvv, String expirationDate) {
+        this.cardNumber = cardNumber;
+        this.cvv = cvv;
+        this.expirationDate = expirationDate;
+    }
+
+    public void pay(double amount) {
+        System.out.println("Paid " + amount + " with credit card.");
+    }
+}
+```
+
+```
+public class PayPalStrategy implements PaymentStrategy {
+    private String email;
+    private String password;
+
+    public PayPalStrategy(String email, String password) {
+        this.email = email;
+        this.password = password;
+    }
+
+    public void pay(double amount) {
+        System.out.println("Paid " + amount + " with PayPal.");
+    }
+}
+```
+
+```
+// Client code
+public class Main {
+    public static void main(String[] args) {
+        ShoppingCart cart = new ShoppingCart();
+        cart.addItem(new Item("iPhone", 1000));
+        cart.addItem(new Item("MacBook", 1500));
+
+        cart.setPaymentStrategy(new CreditCardStrategy("123456789", "123", "12/25"));
+        cart.pay();
+
+        cart.setPaymentStrategy(new PayPalStrategy("user@example.com", "password"));
+        cart.pay();
+    }
+}
+```
+In this example, the ShoppingCart class acts as the context, which has a list of items and a PaymentStrategy instance for handling payments. The PaymentStrategy interface defines the strategy contract, with two concrete implementations: CreditCardStrategy and PayPalStrategy.
+
+The ShoppingCart class delegates the payment task to the PaymentStrategy instance via the pay() method. The client code sets the desired payment strategy by calling the setPaymentStrategy() method on the ShoppingCart instance.
+
+In the client code, the Main class creates a ShoppingCart instance, adds two items, and calls pay() with different payment strategies: first with a credit card strategy and then with a PayPal strategy. The output will be:
+
+
+
 ### Template Method
 The Template Method pattern is a behavioral design pattern that defines a template of an algorithm in a base class and allows subclasses to override certain steps of the algorithm without changing its overall structure. In other words, it provides a skeleton of the algorithm, while letting subclasses provide concrete implementations for certain steps.
 
