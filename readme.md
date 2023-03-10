@@ -868,6 +868,142 @@ In this example, the ChatService class creates a ChatRoom object and is responsi
 
 The ChatService acts as the mediator between the User entities. The ChatService is responsible for creating and managing the User objects, as well as handling the communication between them. The User objects do not have direct knowledge of each other, and instead communicate through the ChatService. The ChatService acts as the central point of control, allowing for more flexibility and easier maintenance of the system.
 
+### Observer
+#### Definition
+The Observer pattern is a design pattern that establishes a one-to-many dependency between objects. In this pattern, an object called the subject maintains a list of its dependents, called observers, and notifies them automatically of any state changes, usually by calling one of their methods. This allows multiple objects to be notified and updated simultaneously when a change occurs, without having to tightly couple them together.
+
+The Observer pattern is useful in situations where you have an object whose state changes over time, and other objects need to be notified and updated when those changes occur. It can also be used to decouple the subject and observer objects, which makes it easier to add or remove observers without affecting the subject.
+
+#### Example
+
+Example 1:
+```
+// Subject interface
+public interface Subject {
+    public void registerObserver(Observer o);
+    public void removeObserver(Observer o);
+    public void notifyObservers();
+}
+
+// Observer interface
+public interface Observer {
+    public void update();
+}
+
+// Concrete subject
+public class ConcreteSubject implements Subject {
+    private List<Observer> observers = new ArrayList<Observer>();
+    private int state;
+
+    public void registerObserver(Observer o) {
+        observers.add(o);
+    }
+
+    public void removeObserver(Observer o) {
+        observers.remove(o);
+    }
+
+    public void notifyObservers() {
+        for (Observer observer : observers) {
+            observer.update();
+        }
+    }
+
+    public int getState() {
+        return state;
+    }
+
+    public void setState(int state) {
+        this.state = state;
+        notifyObservers();
+    }
+}
+
+// Concrete observer
+public class ConcreteObserver implements Observer {
+    private int observerState;
+    private Subject subject;
+
+    public ConcreteObserver(Subject subject) {
+        this.subject = subject;
+        subject.registerObserver(this);
+    }
+
+    public void update() {
+        observerState = subject.getState();
+        // Do something with observerState
+    }
+}
+
+// Usage example
+public static void main(String[] args) {
+    ConcreteSubject subject = new ConcreteSubject();
+    ConcreteObserver observer1 = new ConcreteObserver(subject);
+    ConcreteObserver observer2 = new ConcreteObserver(subject);
+
+    subject.setState(1);
+    // Output: "Observer 1 state: 1"
+    // Output: "Observer 2 state: 1"
+}
+```
+
+Example 2:
+Using Spring built-in ApplicationEvent.
+
+```
+public class NewUserRegisteredEvent extends ApplicationEvent {
+    
+    private User user;
+
+    public NewUserRegisteredEvent(Object source, User user) {
+        super(source);
+        this.user = user;
+    }
+
+    public User getUser() {
+        return user;
+    }
+}
+```
+
+```
+@Service
+public class UserRegistrationService {
+    
+    private ApplicationEventPublisher eventPublisher;
+
+    public UserRegistrationService(ApplicationEventPublisher eventPublisher) {
+        this.eventPublisher = eventPublisher;
+    }
+
+    public void registerUser(User user) {
+        // Register the user
+        // ...
+
+        // Publish the event
+        eventPublisher.publishEvent(new NewUserRegisteredEvent(this, user));
+    }
+}
+```
+
+```
+@Component
+public class NewUserEmailNotifier implements ApplicationListener<NewUserRegisteredEvent> {
+
+    @Override
+    public void onApplicationEvent(NewUserRegisteredEvent event) {
+        User user = event.getUser();
+        String emailBody = "A new user has registered: " + user.getUsername();
+        // Send email to site administrator
+        // ...
+    }
+}
+```
+
+```
+userRegistrationService.registerUser(newUser);
+```
+
 
 ### State
 #### Definition
