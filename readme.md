@@ -1076,6 +1076,189 @@ public class ConcreteClass extends AbstractClass {
 In this example, AbstractClass is the base class that defines the template method templateMethod(), which calls three abstract methods: operation1(), operation2(), and operation3(). The ConcreteClass subclass extends AbstractClass and provides its own implementations for operation1() and operation2(), but uses the default implementation for operation3().
 
 
+### Visitor
+#### Problem
+For example, in a situation where a team needs to implement a feature to export a graph containing different types of nodes into XML format. Initially, they planned to add an export method to each node class and use recursion to execute the method for each node. However, the system architect refused to allow them to alter existing node classes and suggested using the Visitor pattern instead. The Visitor pattern separates the behavior (in this case, exporting to XML) from the object hierarchy (the node classes). The solution allows adding new behaviors (e.g., exporting to a different format) without altering the existing classes, making the code more extensible and maintainable.
+
+
+#### Definition
+The Visitor pattern is a behavioral design pattern that allows for adding new operations to existing object structures without modifying the structures themselves. It separates the algorithm from the object structure on which it operates, allowing new operations to be added without modifying the existing classes.
+
+The Visitor pattern is useful when you have a complex object structure with multiple classes, and you want to add new operations to that structure without modifying the existing classes. This pattern is also helpful when you have many unrelated operations to be performed on objects in a complex structure.
+
+A common real-world example of the Visitor pattern is a tax calculator that needs to calculate tax based on different types of products in a shopping cart. Instead of modifying the classes of the different types of products (e.g., books, electronics, clothing) to add the calculation of tax, a Visitor pattern can be implemented. The tax calculator can act as the visitor and visit each product in the shopping cart, calculating the appropriate tax for each product.
+
+An analogy for the Visitor pattern is a tour guide visiting different tourist attractions. The tour guide represents the visitor, and the tourist attractions represent the objects being visited. The tour guide can perform different operations on each tourist attraction (e.g., providing information, taking pictures), and new operations can be added without modifying the tourist attractions themselves.
+
+In summary, the Visitor pattern is useful when you have a complex object structure with multiple classes, and you want to add new operations to that structure without modifying the existing classes. It separates the algorithm from the object structure and is helpful when you have many unrelated operations to be performed on objects in a complex structure.
+
+#### Example
+```
+public interface Shape {
+    void accept(Visitor visitor);
+}
+```
+
+```
+public class Circle implements Shape {
+    private double radius;
+
+    public Circle(double radius) {
+        this.radius = radius;
+    }
+
+    public double getRadius() {
+        return radius;
+    }
+
+    @Override
+    public void accept(Visitor visitor) {
+        visitor.visitCircle(this);
+    }
+}
+```
+
+```
+public class Rectangle implements Shape {
+    private double width;
+    private double height;
+
+    public Rectangle(double width, double height) {
+        this.width = width;
+        this.height = height;
+    }
+
+    public double getWidth() {
+        return width;
+    }
+
+    public double getHeight() {
+        return height;
+    }
+
+    @Override
+    public void accept(Visitor visitor) {
+        visitor.visitRectangle(this);
+    }
+}
+```
+
+```
+public class Triangle implements Shape {
+    private double base;
+    private double height;
+
+    public Triangle(double base, double height) {
+        this.base = base;
+        this.height = height;
+    }
+
+    public double getBase() {
+        return base;
+    }
+
+    public double getHeight() {
+        return height;
+    }
+
+    @Override
+    public void accept(Visitor visitor) {
+        visitor.visitTriangle(this);
+    }
+}
+```
+
+```
+public interface Visitor {
+    void visitCircle(Circle circle);
+
+    void visitRectangle(Rectangle rectangle);
+
+    void visitTriangle(Triangle triangle);
+}
+```
+
+```
+public class AreaVisitor implements Visitor {
+    private double totalArea;
+
+    @Override
+    public void visitCircle(Circle circle) {
+        double area = Math.PI * circle.getRadius() * circle.getRadius();
+        totalArea += area;
+    }
+
+    @Override
+    public void visitRectangle(Rectangle rectangle) {
+        double area = rectangle.getWidth() * rectangle.getHeight();
+        totalArea += area;
+    }
+
+    @Override
+    public void visitTriangle(Triangle triangle) {
+        double area = 0.5 * triangle.getBase() * triangle.getHeight();
+        totalArea += area;
+    }
+
+    public double getTotalArea() {
+        return totalArea;
+    }
+}
+```
+
+```
+public class PerimeterVisitor implements Visitor {
+    private double totalPerimeter;
+
+    @Override
+    public void visitCircle(Circle circle) {
+        double perimeter = 2 * Math.PI * circle.getRadius();
+        totalPerimeter += perimeter;
+    }
+
+    @Override
+    public void visitRectangle(Rectangle rectangle) {
+        double perimeter = 2 * (rectangle.getWidth() + rectangle.getHeight());
+        totalPerimeter += perimeter;
+    }
+
+    @Override
+    public void visitTriangle(Triangle triangle) {
+        double perimeter = triangle.getBase() + 2 * Math.sqrt(
+                Math.pow(triangle.getBase() / 2, 2) + Math.pow(triangle.getHeight(), 2)
+        );
+        totalPerimeter += perimeter;
+    }
+
+    public double getTotalPerimeter() {
+        return totalPerimeter;
+    }
+}
+```
+
+```
+public class Main {
+    public static void main(String[] args) {
+        List<Shape> shapes = new ArrayList<>();
+        shapes.add(new Circle(3));
+        shapes.add(new Rectangle(4, 5));
+        shapes.add(new Triangle(3, 4));
+
+        AreaVisitor areaVisitor = new AreaVisitor();
+        PerimeterVisitor perimeterVisitor = new PerimeterVisitor();
+
+        for (Shape shape : shapes) {
+            shape.accept(areaVisitor);
+            shape.accept(perimeterVisitor);
+        }
+
+        System.out.println("Total area: " + areaVisitor.getTotalArea());
+        System.out.println("Total perimeter: " + perimeterVisitor.getTotalPerimeter());
+    }
+}
+```
+
+
 ## READ
 - [When to use the Bridge pattern and how is it different from the Adapter pattern?](https://stackoverflow.com/questions/319728/when-to-use-the-bridge-pattern-and-how-is-it-different-from-the-adapter-pattern)
 
