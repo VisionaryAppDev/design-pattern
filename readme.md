@@ -38,26 +38,29 @@ References:
 
 ## Creational Patterns
 ### Factory Method
-
+#### Definition
 The Factory Method pattern is a creational design pattern that provides an interface for creating objects but lets subclasses decide which class to instantiate. In other words, the factory method pattern defines an interface for creating an object, but allows the subclasses to decide which class to instantiate based on the requirements.
 
 The Factory Method pattern is useful when there are several classes that implement a common interface, and it is not known at compile time which implementation will be used. The factory method pattern allows for flexibility in creating objects and makes it easy to add new implementations without modifying existing code.
 
+In summary, the Factory Method pattern provides flexibility in creating objects and allows for easy addition of new implementations without modifying existing code. It is useful when there are several classes that implement a common interface, and it is not known at compile time which implementation will be used.
+
+#### Usecase
 One analogy for the Factory Method pattern is a pizza restaurant. The pizza restaurant has a common interface, which is to make a pizza. However, the type of pizza made depends on the order. The restaurant has several options for pizza, such as pepperoni, cheese, and vegetarian. The order is the client in this scenario, and the pizza chef is the factory. The pizza chef creates the pizza based on the order and returns the appropriate type of pizza to the client.
 
 A sample use case for the Factory Method pattern is in a shopping cart application. Suppose the shopping cart needs to create an object for each item added to the cart. The item may be a book, a toy, or a piece of clothing, and each item has different attributes and behaviors. Rather than having a single class to create objects, the Factory Method pattern can be used to create a separate factory class for each item. The factory class can create the appropriate object based on the item type, which allows for flexibility in adding new items to the cart without modifying existing code.
 
 Another use case for the Factory Method pattern is in a game development application. The game may have several types of characters, such as warriors, mages, and archers. Each character type has different attributes and behaviors, and the appropriate character type needs to be created based on the user's choice. The Factory Method pattern can be used to create a separate factory class for each character type. The factory class can create the appropriate character object based on the user's choice, which allows for flexibility in adding new character types to the game without modifying existing code.
 
-In summary, the Factory Method pattern provides flexibility in creating objects and allows for easy addition of new implementations without modifying existing code. It is useful when there are several classes that implement a common interface, and it is not known at compile time which implementation will be used.
+
+
+#### Example:
 
 ![example](resources/factory-1.png)
-
 ---
 ![example](resources/factory-2.png)
 
 
-Example 1:
 ```
 public enum LogisticType {
     LAND("LAND"),
@@ -126,10 +129,12 @@ public class LogisticFactory {
 
 ## Structural Patterns
 ### Bridge
+#### Definition
 The Bridge Design Pattern is a structural design pattern that decouples an abstraction from its implementation, allowing both to vary independently. It involves creating two separate abstraction and implementation hierarchies, and connecting them using a bridge interface. This allows the implementation to be changed or extended without affecting the abstraction, and vice versa.
 
 The Bridge Design Pattern is useful when there are multiple variations in functionality, and the implementation details may change frequently. By separating the abstraction from the implementation, the Bridge pattern allows for more flexibility and scalability in the codebase.
 
+#### Usecase
 A common use case for the Bridge Design Pattern is in graphical user interfaces (GUIs), where there are multiple types of controls that can be implemented in different ways. For example, a button control can be implemented as a standard button, a dropdown button, or a toggle button. The implementation of each type of button can vary, but the abstraction (the fact that it is a button control) remains the same.
 
 Another use case for the Bridge Design Pattern is in database applications, where there are multiple database systems (such as MySQL, Oracle, or PostgreSQL) that can be used to store data. By separating the abstraction (the database interface) from the implementation (the specific database system), the application can support multiple database systems without needing to modify the codebase.
@@ -137,6 +142,10 @@ Another use case for the Bridge Design Pattern is in database applications, wher
 Suppose you have a music player application that can play different types of audio files such as MP3, WAV, and FLAC. You want to add support for different types of operating systems such as Windows, Linux, and macOS. You can use the bridge design pattern to decouple the abstraction of the music player from the implementation of the operating system. The music player can be the abstraction, and the operating system can be the implementation. The bridge between them can be the operating system interface. By using the bridge design pattern, you can add support for new operating systems without changing the music player code.
 
 Suppose a person who wants to cross a river. They could choose to swim across, but that would be difficult and time-consuming. Instead, they could use a bridge to cross the river quickly and easily. The bridge provides a standardized interface (a path over the river) that can be used by different people (or objects) to cross the river in their own way. In software development, the bridge pattern can be thought of as a way to cross the gap between different abstractions or systems, just as a physical bridge crosses a gap between two points. It allows two or more different systems to work together by providing a standard interface that can be used by each system to communicate with the other.
+
+
+#### Example
+Say you have a geometric Shape class with a pair of subclasses: Circle and Square. You want to extend this class hierarchy to incorporate colors, so you plan to create Red and Blue shape subclasses. However, since you already have two subclasses, you’ll need to create four class combinations such as BlueCircle and RedSquare.
 
 ![example](resources/bridge-1.png)
 ---
@@ -257,11 +266,10 @@ public class Main {
 ```
 
 ### Decorator
+#### Definition
 The decorator pattern is a design pattern that allows behavior to be added to an individual object dynamically, without affecting the behavior of other objects from the same class. It is one of the structural design patterns.
 
 The decorator pattern involves a set of decorator classes that are used to wrap concrete components. These decorator classes are used to add new functionality to an existing object dynamically. The original object can be decorated with one or more decorator classes, each adding new behavior to the original object.
-
-One example of the decorator pattern is a coffee shop where customers can order a cup of coffee with various toppings such as whipped cream, caramel, or sprinkles. In this scenario, the base coffee represents the component and the toppings represent the decorators. Customers can choose to add one or more toppings to their coffee, and each topping can be combined in any order.
 
 The decorator pattern is useful when:
 - You want to add behavior to an object dynamically without affecting other objects of the same class.
@@ -277,6 +285,15 @@ Overall, the decorator pattern provides a flexible way to add new behavior to an
 
 ![img](resources/decorator-1.png)
 
+#### Usecase
+One example of the decorator pattern is a coffee shop where customers can order a cup of coffee with various toppings such as whipped cream, caramel, or sprinkles. In this scenario, the base coffee represents the component and the toppings represent the decorators. Customers can choose to add one or more toppings to their coffee, and each topping can be combined in any order.
+
+Another example of the decorator pattern is sandwich shop application that allows customers to order custom sandwiches. Each sandwich has a base price, and customers can add toppings to their sandwiches, with each topping adding an additional cost. You can use the decorator pattern to implement the sandwich toppings. You can create an abstract base class Sandwich that defines the basic structure of a sandwich and its base price. Then, you can create concrete classes such as Bread, Meat, Cheese, and Vegetables that represent the different components of a sandwich. 
+
+Next, you can create a decorator class `SandwichDecorator` that also extends the Sandwich class and adds a `toppingCost` field and a `getPrice` method that calculates the total cost of the sandwich with the added toppings. You can then create concrete decorator classes such as `TomatoesDecorator`, `BaconDecorator`, and `AvocadoDecorator` that add specific toppings to the sandwich. By using the decorator pattern, you can easily add or remove toppings from a sandwich without affecting its base price or the structure of the Sandwich class. The customers can have a customized sandwich with the toppings they like, and you can easily add new toppings in the future without modifying the existing code.
+
+
+#### Example
 Imagine that you’re working on a notification library which lets other programs notify their users about important events. At some point, you realize that users of the library expect more than just email notifications. Many of them would like to receive an SMS about critical issues. Others would like to be notified on Facebook and, of course, the corporate users would love to get Slack notifications. And now people want use several notification type at once.
 
 ![img](resources/decorator-3.png)
@@ -387,19 +404,21 @@ public class ItalicTextDecorator extends TextDecorator {
 
 
 ### Facade
+#### Definition
 The Facade pattern is a software design pattern that provides a simplified interface to a complex system of classes, interfaces, and APIs. It hides the complexity of the system and provides a simpler interface that the client can use to interact with the system.
 
 The Facade pattern is useful when you have a complex system that needs to be used by multiple clients or when you want to isolate the clients from the complexities of the system. It promotes loose coupling between the client and the system, which makes the system easier to modify and maintain.
-
-The Facade pattern is similar to a concierge at a hotel. The concierge provides a simplified interface to the complex system of services available in the hotel. The guests can use the concierge to book a taxi, reserve a table at a restaurant, or order room service without having to interact with the individual services directly.
-
-In software development, a Facade can be used to provide a simple interface to a complex system of objects or APIs. For example, in a web application, a Facade can be used to provide a simplified interface to a set of APIs that are used to access a database.
 
 Some of the use cases for the Facade pattern include:
 - Simplifying the interface to a complex system
 - Providing a layer of abstraction between the client and the system
 - Promoting loose coupling between the client and the system
 - Improving the maintainability and extensibility of the system
+
+#### Usecase
+The Facade pattern is similar to a concierge at a hotel. The concierge provides a simplified interface to the complex system of services available in the hotel. The guests can use the concierge to book a taxi, reserve a table at a restaurant, or order room service without having to interact with the individual services directly.
+
+In software development, a Facade can be used to provide a simple interface to a complex system of objects or APIs. For example, in a web application, a Facade can be used to provide a simplified interface to a set of APIs that are used to access a database.
 
 An example of using the Facade pattern in a web application is to provide a simplified interface for accessing a database. Instead of exposing the full functionality of the database APIs to the client, the Facade can provide a set of simple CRUD (create, read, update, delete) operations that the client can use to interact with the database. This makes it easier for the client to use the database and also makes it easier to modify the database implementation without affecting the clients.
 
@@ -409,6 +428,7 @@ Suppose we have a complex system that includes several subsystems, each of which
 
 ![example](resources/facade.png)
 
+#### Example
 ```
 public class SystemFacade {
     private SubsystemA subsystemA;
@@ -430,11 +450,10 @@ public class SystemFacade {
 ```
 
 ### Proxy
+#### Definition
 The Proxy pattern is a structural design pattern that provides a surrogate or placeholder for another object to control access to it. In other words, a proxy acts as a middleman between a client and the real object, handling all requests and performing additional tasks such as caching, logging, or authentication.
 
 The main purpose of the Proxy pattern is to provide a level of indirection between a client and a real object, enabling greater flexibility and control over how the client interacts with the object. The Proxy pattern is particularly useful when working with remote or expensive resources that should be accessed through a local object that can handle caching, authentication, or other tasks.
-
-Imagine you are the CEO of a big company and you have a personal assistant who manages all of your scheduling and meetings. Your assistant is the Proxy in this scenario, as they act as an intermediary between you and the people you are meeting with.When someone wants to schedule a meeting with you, they go through your assistant, who checks your availability and schedules the meeting accordingly. Similarly, when you attend a meeting, your assistant will be present to take notes and make sure everything goes smoothly. In this case, your personal assistant is acting as a proxy, representing you and your schedule to the outside world. This allows you to focus on your work without being constantly interrupted by meeting requests and scheduling details.
 
 Some sample use cases for the Proxy pattern include:
 1. Caching: The proxy can cache results from a remote or expensive operation, improving performance by reducing the number of requests to the real object.
@@ -446,8 +465,12 @@ In terms of implementation, the Proxy pattern can be implemented using either a 
 
 In Spring, the Proxy pattern is often used to implement AOP (Aspect-Oriented Programming), where a proxy is used to intercept method calls and apply additional behavior such as logging, caching, or transaction management. Spring also provides support for creating dynamic proxies using either JDK or CGLIB, allowing for flexible and efficient implementation of proxies.
 
+#### Usecase
+Imagine you are the CEO of a big company and you have a personal assistant who manages all of your scheduling and meetings. Your assistant is the Proxy in this scenario, as they act as an intermediary between you and the people you are meeting with.When someone wants to schedule a meeting with you, they go through your assistant, who checks your availability and schedules the meeting accordingly. Similarly, when you attend a meeting, your assistant will be present to take notes and make sure everything goes smoothly. In this case, your personal assistant is acting as a proxy, representing you and your schedule to the outside world. This allows you to focus on your work without being constantly interrupted by meeting requests and scheduling details.
+
 ![img](resources/proxy-1.png)
 
+#### Example
 Suppose you have a web application that accesses a remote API to fetch data. However, the remote API has a limit on the number of requests that can be made in a certain time period. To avoid exceeding this limit, you can use a proxy pattern to cache the results of previous requests and serve them from the cache when the same request is made again within a certain time period.
 ```
 public interface RemoteApi {
@@ -492,15 +515,10 @@ In this example, RealRemoteApi is the actual implementation of the remote API in
 
 ## Behavioral Patterns
 ### Chain of Responsibility
+#### Definition
 The Chain of Responsibility pattern is a behavioral pattern that allows you to pass requests through a chain of handlers until one of them handles the request. Each handler has a reference to the next handler in the chain, forming a linked list of handlers. The request is passed through the chain until one handler can handle it or until the end of the chain is reached.
 
 The Chain of Responsibility pattern is useful when you have a set of handlers that can handle a request, but you don't know which one to use until runtime. It's also useful when you want to decouple the sender of a request from its receiver.
-
-A common example of the Chain of Responsibility pattern is in a web application that has multiple filters to process a request. Each filter checks the request for certain criteria and either handles the request or passes it to the next filter in the chain.
-
-Another example is in a customer service system, where customer complaints are handled by different levels of support personnel. A complaint is first handled by a lower level support agent, and if they can't resolve the issue, it's passed up the chain to a higher level support agent.
-
-An analogy for the Chain of Responsibility pattern is a customer support phone system, where the customer's request is routed through a series of prompts and menus until it reaches the appropriate support agent who can handle the request.
 
 In terms of implementation, each handler in the chain must have a method for handling the request and a reference to the next handler in the chain. The client code that creates the chain of handlers only needs to know about the first handler in the chain. The handler can either handle the request or pass it on to the next handler in the chain.
 
@@ -508,6 +526,12 @@ Overall, the Chain of Responsibility pattern provides a flexible and extensible 
 
 ![img](resources/chain-of-responsibility-1.png)
 
+#### Usecase
+A common example of the Chain of Responsibility pattern is in a web application that has multiple filters to process a request. Each filter checks the request for certain criteria and either handles the request or passes it to the next filter in the chain.
+
+Another example is in a customer service system, where customer complaints are handled by different levels of support personnel. A complaint is first handled by a lower level support agent, and if they can't resolve the issue, it's passed up the chain to a higher level support agent.
+
+#### Example
 Imagine you're building a software for a bank. The bank has different levels of approval for loan applications based on the loan amount. If the loan amount is less than $10,000, it can be approved by the bank manager alone. If the amount is between $10,000 and $50,000, it needs approval from the bank manager as well as the regional manager. If it's more than $50,000, it needs approval from the bank manager, regional manager, and the head office.
 
 In this case, you can use the Chain of Responsibility pattern to create a chain of approvers. Each approver in the chain will check if they have the authority to approve the loan based on the loan amount. If they do, they will approve it and pass it on to the next approver in the chain. If they don't, they will simply pass it on to the next approver.
@@ -601,20 +625,21 @@ In this example, we have three different LoanApprovers - BankManager, RegionalMa
 
 
 ### Command
+#### Definition
 The Command pattern is a behavioral design pattern that encapsulates a request as an object, by letting you parameterize clients with different requests, queue or log requests, and support undoable operations.
 
 The main idea behind the Command pattern is to separate the requester of an action from the object that performs the action. This separation provides greater flexibility and allows you to design a system that can handle multiple types of requests, while still keeping it simple and easy to use.
-
-A good example of the Command pattern is a restaurant order system. A waiter takes orders from customers and sends them to the kitchen for processing. In this scenario, the waiter acts as the invoker, and the kitchen acts as the receiver. Each order is a command object that contains all the necessary information to prepare the food, such as the type of dish, the ingredients, and the cooking instructions.
-
-Another example of the Command pattern is a remote control for a TV. The remote control is the invoker, and the TV is the receiver. Each button on the remote control is a command object that sends a specific request to the TV, such as changing the channel, adjusting the volume, or turning the TV on or off.
 
 The Command pattern is useful in situations where you want to decouple the requester of an action from the object that performs the action. It is especially useful in situations where you need to support undoable or redoable operations, as each command object can keep track of its own state and provide an undo or redo method.
 
 In Spring Boot, the Command pattern can be used to encapsulate and execute database transactions. Each command object represents a database operation, such as creating a new record, updating an existing record, or deleting a record. The invoker can then execute the command object, which will perform the database operation and return the result. This allows you to decouple the business logic of your application from the database access layer, making it easier to maintain and test your code.
 
+#### Usecase
+A good example of the Command pattern is a restaurant order system. A waiter takes orders from customers and sends them to the kitchen for processing. In this scenario, the waiter acts as the invoker, and the kitchen acts as the receiver. Each order is a command object that contains all the necessary information to prepare the food, such as the type of dish, the ingredients, and the cooking instructions.
 
-### [Example](https://refactoring.guru/design-patterns/command)
+Another example of the Command pattern is a remote control for a TV. The remote control is the invoker, and the TV is the receiver. Each button on the remote control is a command object that sends a specific request to the TV, such as changing the channel, adjusting the volume, or turning the TV on or off.
+
+#### [Example](https://refactoring.guru/design-patterns/command)
 Imagine that you’re working on a new text-editor app. Your current task is to create a toolbar with a bunch of buttons for various operations of the editor. You created a very neat Button class that can be used for buttons on the toolbar, as well as for generic buttons in various dialogs.
 
 ![example](resources/command-1.png)
@@ -763,10 +788,12 @@ In a Spring Boot application, the Invoker class can be implemented as a service 
 
 
 ### State
+#### Definition
 The state pattern is a behavioral design pattern that allows an object to change its behavior when its internal state changes. It involves encapsulating different behaviors into separate state classes, and the context object can delegate to the current state object to perform the appropriate behavior based on its internal state.
 
 The state pattern is useful when you have an object that behaves differently based on its internal state, and when adding new states or behaviors can be done easily without affecting the existing code. It is also useful when you have a large conditional block that depends on the internal state of an object, as it can be refactored into separate state classes.
 
+#### Usecase
 A good example for the state pattern is a traffic light. A traffic light changes its behavior based on its current state (red, yellow, green). Each state (red, yellow, green) has its own behavior (stop, prepare to stop, go), and the traffic light delegates to the current state to perform the appropriate behavior.
 
 Some sample use cases for the state pattern include:
@@ -777,13 +804,14 @@ Some sample use cases for the state pattern include:
 - When the phone is locked, pressing any button leads to the unlock screen.
 - When the phone’s charge is low, pressing any button shows the charging screen.
 
-
 Imagine that we have a Document class. A document can be in one of three states: Draft, Moderation and Published. The publish method of the document works a little bit differently in each state:
 - In Draft, it moves the document to moderation.
 - In Moderation, it makes the document public, but only if the current user is an administrator.
 -  In Published, it doesn’t do anything at all.
 ![img](resources/state-1.png)
 
+
+#### Example
 In Java, the state pattern can be implemented using interfaces or abstract classes to represent the different states, and a context class that maintains a reference to the current state object. The context class can delegate to the current state object to perform the appropriate behavior. Here's a simple example using Java:
 
 
@@ -837,10 +865,16 @@ public class Context {
 ```
 
 ### Strategy
+#### Definition
 The Strategy pattern is a behavioral design pattern that allows you to define a family of algorithms, encapsulate each one as an object, and make them interchangeable at runtime. This pattern enables the algorithm's behavior to be selected at runtime without changing the context class that uses it.
 
 The Strategy pattern is useful when you have a group of similar algorithms and need to swap them out based on the situation. It's particularly useful when you have a class with a single, massive conditional statement that is difficult to maintain or extend.
 
+In a nutshell, the Strategy pattern separates the algorithm from the class that uses it, making it easy to change the algorithm's behavior at runtime.
+
+![img](resources/strategy-1.png)
+
+#### Usecase
 A real-world example of the Strategy pattern is the sorting algorithm in a computer program. Different sorting algorithms can be used depending on the data set's size and structure. For example, quicksort may be used for larger sets, while insertion sort may be used for smaller sets.
 
 An analogy for the Strategy pattern is a toolbox. You can choose the appropriate tool for the job, and each tool has a different function. The tools are interchangeable and can be swapped out depending on the task at hand.
@@ -851,11 +885,10 @@ Sample use cases for the Strategy pattern include:
 - Payment methods in an e-commerce application
 - Data validation rules in a form processing application
 
-![img](resources/strategy-1.png)
 
-In a nutshell, the Strategy pattern separates the algorithm from the class that uses it, making it easy to change the algorithm's behavior at runtime.
-
+#### Example
 Example 1:
+
 Suppose you're building a game that involves different types of characters, such as knights, archers, and mages. Each character has its own attack style and strength, but they all need to be able to attack their enemies. You can use the Strategy pattern to implement the attack behavior for each character type.
 
 ```
@@ -1021,25 +1054,25 @@ In the client code, the Main class creates a ShoppingCart instance, adds two ite
 
 
 ### Template Method
+#### Definition
 The Template Method pattern is a behavioral design pattern that defines a template of an algorithm in a base class and allows subclasses to override certain steps of the algorithm without changing its overall structure. In other words, it provides a skeleton of the algorithm, while letting subclasses provide concrete implementations for certain steps.
 
 The Template Method pattern is useful in situations where you want to implement a common algorithm that should work for all subclasses, but some steps of the algorithm may vary depending on the subclass. By using the Template Method pattern, you can avoid code duplication and make the code more flexible and maintainable.
 
+![img](resources/template-method-1.png)
+
+#### Usecase
 Some sample use cases for the Template Method pattern include:
 - Building a web application framework that provides a common structure for web pages, but allows customization of individual components such as header, footer, and content.
 - Implementing a game engine that provides a common game loop, but allows each game to define its own logic for updating game objects and rendering graphics.
 - Developing a data import/export tool that provides a common format for data, but allows customization of the input and output formats for each data source or destination.
 
-![img](resources/template-method-1.png)
 
-An example for the Template Method pattern could be a baking recipe. The recipe provides a template for baking a cake, but certain steps may vary depending on the specific type of cake being made. For example, the recipe may provide a step for adding flour, but the amount and type of flour may vary depending on the recipe for each type of cake.
+Other example for the Template Method pattern could be a baking recipe. The recipe provides a template for baking a cake, but certain steps may vary depending on the specific type of cake being made. For example, the recipe may provide a step for adding flour, but the amount and type of flour may vary depending on the recipe for each type of cake.
 
-Let's say you're designing a game engine for a platformer game. You want to have a base class for all characters in the game, but you also want to allow for different types of characters (e.g. player character, enemy character, non-playable character) to have their own unique behaviors.
+Let's say you're designing a game engine for a platformer game. You want to have a base class for all characters in the game, but you also want to allow for different types of characters (e.g. player character, enemy character, non-playable character) to have their own unique behaviors. You can use the template method pattern to define a base Character class with a template method for character behavior. Each subtype of the Character class can then implement their own behavior by overriding parts of the template method. For example, the PlayerCharacter class might override the jump() method to allow the player to jump higher than other characters, while the EnemyCharacter class might override the attack() method to deal more damage to the player.
 
-You can use the template method pattern to define a base Character class with a template method for character behavior. Each subtype of the Character class can then implement their own behavior by overriding parts of the template method.
-
-For example, the PlayerCharacter class might override the jump() method to allow the player to jump higher than other characters, while the EnemyCharacter class might override the attack() method to deal more damage to the player.
-
+#### Example
 By using the template method pattern, you can provide a common interface for all characters in the game, while also allowing for each character to have its own unique behavior.
 
 ```
@@ -1086,11 +1119,13 @@ The Visitor pattern is a behavioral design pattern that allows for adding new op
 
 The Visitor pattern is useful when you have a complex object structure with multiple classes, and you want to add new operations to that structure without modifying the existing classes. This pattern is also helpful when you have many unrelated operations to be performed on objects in a complex structure.
 
+In summary, the Visitor pattern is useful when you have a complex object structure with multiple classes, and you want to add new operations to that structure without modifying the existing classes. It separates the algorithm from the object structure and is helpful when you have many unrelated operations to be performed on objects in a complex structure.
+
+#### Usecase
 A common real-world example of the Visitor pattern is a tax calculator that needs to calculate tax based on different types of products in a shopping cart. Instead of modifying the classes of the different types of products (e.g., books, electronics, clothing) to add the calculation of tax, a Visitor pattern can be implemented. The tax calculator can act as the visitor and visit each product in the shopping cart, calculating the appropriate tax for each product.
 
 An analogy for the Visitor pattern is a tour guide visiting different tourist attractions. The tour guide represents the visitor, and the tourist attractions represent the objects being visited. The tour guide can perform different operations on each tourist attraction (e.g., providing information, taking pictures), and new operations can be added without modifying the tourist attractions themselves.
 
-In summary, the Visitor pattern is useful when you have a complex object structure with multiple classes, and you want to add new operations to that structure without modifying the existing classes. It separates the algorithm from the object structure and is helpful when you have many unrelated operations to be performed on objects in a complex structure.
 
 #### Example
 ```
