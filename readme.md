@@ -429,6 +429,66 @@ public class SystemFacade {
 }
 ```
 
+### Proxy
+The Proxy pattern is a structural design pattern that provides a surrogate or placeholder for another object to control access to it. In other words, a proxy acts as a middleman between a client and the real object, handling all requests and performing additional tasks such as caching, logging, or authentication.
+
+The main purpose of the Proxy pattern is to provide a level of indirection between a client and a real object, enabling greater flexibility and control over how the client interacts with the object. The Proxy pattern is particularly useful when working with remote or expensive resources that should be accessed through a local object that can handle caching, authentication, or other tasks.
+
+Imagine you are the CEO of a big company and you have a personal assistant who manages all of your scheduling and meetings. Your assistant is the Proxy in this scenario, as they act as an intermediary between you and the people you are meeting with.When someone wants to schedule a meeting with you, they go through your assistant, who checks your availability and schedules the meeting accordingly. Similarly, when you attend a meeting, your assistant will be present to take notes and make sure everything goes smoothly. In this case, your personal assistant is acting as a proxy, representing you and your schedule to the outside world. This allows you to focus on your work without being constantly interrupted by meeting requests and scheduling details.
+
+Some sample use cases for the Proxy pattern include:
+1. Caching: The proxy can cache results from a remote or expensive operation, improving performance by reducing the number of requests to the real object.
+2. Remote access: The proxy can provide a local interface to a remote object, allowing clients to access the object over a network.
+3. Security: The proxy can handle authentication and authorization for the real object, ensuring that only authorized clients can access it.
+4. Virtual proxy: The proxy can create a placeholder for an expensive object until it is actually needed, allowing the application to start up faster and reducing memory usage.
+
+In terms of implementation, the Proxy pattern can be implemented using either a static or dynamic proxy. A static proxy is created at compile time and requires a separate proxy class for each real object. A dynamic proxy is created at runtime and can handle multiple real objects using reflection.
+
+In Spring, the Proxy pattern is often used to implement AOP (Aspect-Oriented Programming), where a proxy is used to intercept method calls and apply additional behavior such as logging, caching, or transaction management. Spring also provides support for creating dynamic proxies using either JDK or CGLIB, allowing for flexible and efficient implementation of proxies.
+
+![img](resources/proxy-1.png)
+
+Suppose you have a web application that accesses a remote API to fetch data. However, the remote API has a limit on the number of requests that can be made in a certain time period. To avoid exceeding this limit, you can use a proxy pattern to cache the results of previous requests and serve them from the cache when the same request is made again within a certain time period.
+```
+public interface RemoteApi {
+    String getData(String key);
+}
+```
+
+```
+public class RealRemoteApi implements RemoteApi {
+    public String getData(String key) {
+        // make the actual request to the remote API and return the data
+    }
+}
+```
+
+```
+public class RemoteApiProxy implements RemoteApi {
+    private RealRemoteApi realRemoteApi;
+    private Map<String, String> cache = new HashMap<>();
+    private long cacheExpiryTime = 60000; // 1 minute
+
+    public RemoteApiProxy(RealRemoteApi realRemoteApi) {
+        this.realRemoteApi = realRemoteApi;
+    }
+
+    public String getData(String key) {
+        String data = cache.get(key);
+        if (data == null || System.currentTimeMillis() > cacheExpiryTime) {
+            // data not in cache or cache has expired, make request to real remote API
+            data = realRemoteApi.getData(key);
+            cache.put(key, data);
+            cacheExpiryTime = System.currentTimeMillis() + 60000; // set cache expiry time to 1 minute from now
+        }
+        return data;
+    }
+}
+```
+In this example, RealRemoteApi is the actual implementation of the remote API interface, and RemoteApiProxy is a proxy that caches the results of previous requests. When a request is made to RemoteApiProxy, it first checks if the data is in the cache and if the cache has not expired. If the data is in the cache and the cache has not expired, the data is returned from the cache. Otherwise, the proxy makes a request to the real remote API to fetch the data, caches the data, and returns it to the caller.
+
+
+
 
 ## Behavioral Patterns
 ### Command
