@@ -787,6 +787,88 @@ The reason for having an Invoker class is to separate the responsibility of invo
 In a Spring Boot application, the Invoker class can be implemented as a service or a controller, depending on the context in which the Command pattern is being used. For example, if the Command pattern is being used to implement an undo/redo functionality, the Invoker class might be implemented as a controller that listens to user input and executes the appropriate Command object's execute() method. On the other hand, if the Command pattern is being used to perform some long-running background operation, the Invoker class might be implemented as a Spring service that runs the command asynchronously.
 
 
+### Mediator
+#### Definition
+The Mediator pattern is a behavioral design pattern that promotes loose coupling among objects by controlling their communication through a central mediator object. Instead of objects communicating directly with each other, they communicate through the mediator object. This way, the objects are less dependent on each other and the system becomes easier to maintain and modify.
+
+The Mediator pattern is useful when you have a system with many objects that need to communicate with each other. If the objects communicate directly with each other, the system can become complex and difficult to manage. By using a mediator object to handle the communication, the system becomes simpler and easier to maintain.
+
+The Mediator pattern can also be used in software systems such as GUI applications, where different components of the application need to communicate with each other. In this case, the mediator object can act as a central hub, controlling the communication between the different components.
+
+In summary, the Mediator pattern is used to simplify the communication between objects in a system with many components. It promotes loose coupling and makes the system easier to maintain and modify.
+
+![img](resources/mediator-1.png)
+
+#### Usecase
+A real-world example of the Mediator pattern is air traffic control. Air traffic control acts as a mediator between the pilots of airplanes. Instead of pilots communicating directly with each other, they communicate with air traffic control. Air traffic control controls the communication and ensures that the airplanes are safely guided to their destination.
+![img](resources/mediator-2.png)
+
+Another example is a chat room in which multiple users can communicate with each other. In this case, the chat room acts as a mediator between the users. Instead of users communicating directly with each other, they communicate with the chat room, which handles the communication and ensures that the messages are delivered to the intended recipients.
+
+#### Example
+Suppose you have a messaging system where users can send messages to each other. Each user has a profile that contains their name, email address, and other details. When a user sends a message to another user, the message should be sent to the recipient's email address.
+
+In this case, we can use the Mediator pattern to coordinate the interactions between the users and the email service. Here's how the classes might look:
+```
+public class User {
+    private String name;
+
+    public User(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void receiveMessage(String senderName, String message) {
+        System.out.println(name + " received message from " + senderName + ": " + message);
+    }
+}
+
+public class ChatRoom {
+    private List<User> users;
+
+    public ChatRoom() {
+        this.users = new ArrayList<>();
+    }
+
+    public void register(User user) {
+        users.add(user);
+    }
+
+    public void sendMessage(User sender, String message) {
+        for (User user : users) {
+            if (!user.equals(sender)) {
+                user.receiveMessage(sender.getName(), message);
+            }
+        }
+    }
+}
+
+public class ChatService {
+    private ChatRoom chatRoom;
+
+    public ChatService() {
+        this.chatRoom = new ChatRoom();
+    }
+
+    public User createUser(String name) {
+        User user = new User(name);
+        chatRoom.register(user);
+        return user;
+    }
+
+    public void sendMessage(User user, String message) {
+        chatRoom.sendMessage(user, message);
+    }
+}
+```
+In this example, the ChatService class creates a ChatRoom object and is responsible for registering users with the chat room. The ChatRoom object is responsible for handling the communication between the users. The User class does not contain any references to the chat room or other users. Instead, the User object simply receives messages sent by other users through the ChatRoom object. This design separates the concerns of creating and managing the chat room from the concerns of individual users, resulting in a more organized and scalable codebase.
+
+The ChatService acts as the mediator between the User entities. The ChatService is responsible for creating and managing the User objects, as well as handling the communication between them. The User objects do not have direct knowledge of each other, and instead communicate through the ChatService. The ChatService acts as the central point of control, allowing for more flexibility and easier maintenance of the system.
+
+
 ### State
 #### Definition
 The state pattern is a behavioral design pattern that allows an object to change its behavior when its internal state changes. It involves encapsulating different behaviors into separate state classes, and the context object can delegate to the current state object to perform the appropriate behavior based on its internal state.
