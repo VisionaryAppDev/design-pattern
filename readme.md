@@ -126,6 +126,77 @@ public class LogisticFactory {
 }
 ```
 
+### Builder
+#### Definition
+The Builder pattern is a creational design pattern that separates the construction of a complex object from its representation, allowing the same construction process to create different representations. It is useful when you need to create an object that requires the setting of multiple parameters, and when some of these parameters may be optional or have default values.
+
+The Builder pattern provides a clean way to construct complex objects and is especially useful when working with objects that have a large number of constructor arguments. By using a separate builder class to construct an object, the client code becomes cleaner and more maintainable. It also allows for the creation of different representations of the same object, which is useful when dealing with objects that have multiple possible configurations.
+
+In summary, the Builder pattern is useful when you need to create complex objects that have multiple possible configurations. It provides a clean and maintainable way to construct objects, and allows for the creation of different representations of the same object.
+
+
+#### Usecase
+Builder pattern could be building a house. A builder uses a set of blueprints to construct a house according to the desired specifications of the owner. The blueprints provide a clear guide for the construction process, and the owner can choose from different options for each aspect of the house, such as the number of rooms, the type of flooring, and the color of the walls.
+
+A real-world example of the Builder pattern is the StringBuilder class in Java. The StringBuilder class allows you to construct a string by appending characters, which is a more efficient way to build a string than using the string concatenation operator. The StringBuilder class provides methods for appending characters, inserting characters, and deleting characters, allowing you to build a string in a flexible and efficient way.
+
+#### Example
+Here is a sample use case for the Builder pattern: Let's say you are building a pizza ordering system. You need to create a Pizza class that can be customized with different toppings and sizes. Instead of creating a separate constructor for each possible combination of toppings and sizes, you can use the Builder pattern to create a flexible and extensible Pizza class. The Pizza class can have a builder class that allows you to set the toppings and size of the pizza, and returns an instance of the Pizza class with those properties set.
+
+```
+public class Pizza {
+    private String crust;
+    private String sauce;
+    private String cheese;
+    private List<String> toppings;
+    
+    public Pizza(String crust, String sauce, String cheese, List<String> toppings) {
+        this.crust = crust;
+        this.sauce = sauce;
+        this.cheese = cheese;
+        this.toppings = toppings;
+    }
+    
+    // Getters and setters
+    
+    public static class PizzaBuilder {
+        private String crust;
+        private String sauce;
+        private String cheese;
+        private List<String> toppings;
+        
+        public PizzaBuilder() {
+            toppings = new ArrayList<>();
+        }
+        
+        public PizzaBuilder crust(String crust) {
+            this.crust = crust;
+            return this;
+        }
+        
+        public PizzaBuilder sauce(String sauce) {
+            this.sauce = sauce;
+            return this;
+        }
+        
+        public PizzaBuilder cheese(String cheese) {
+            this.cheese = cheese;
+            return this;
+        }
+        
+        public PizzaBuilder addTopping(String topping) {
+            toppings.add(topping);
+            return this;
+        }
+        
+        public Pizza build() {
+            return new Pizza(crust, sauce, cheese, toppings);
+        }
+    }
+}
+```
+**NOTE**: This provided example above isn't thread safe.
+
 
 ## Structural Patterns
 ### Bridge
