@@ -24,7 +24,7 @@ References:
 7. [Proxy](#proxy)
 
 
-## [Behavioral Patterns](#)
+## [Behavioral Patterns](#behavioral-patterns-2)
 1. [Chain of Responsibility](#chain-of-responsibility)
 2. [Command](#command)
 3. [Iterator](#iterator)
@@ -255,6 +255,136 @@ public class Main {
     }
 }
 ```
+
+### Decorator
+The decorator pattern is a design pattern that allows behavior to be added to an individual object dynamically, without affecting the behavior of other objects from the same class. It is one of the structural design patterns.
+
+The decorator pattern involves a set of decorator classes that are used to wrap concrete components. These decorator classes are used to add new functionality to an existing object dynamically. The original object can be decorated with one or more decorator classes, each adding new behavior to the original object.
+
+One example of the decorator pattern is a coffee shop where customers can order a cup of coffee with various toppings such as whipped cream, caramel, or sprinkles. In this scenario, the base coffee represents the component and the toppings represent the decorators. Customers can choose to add one or more toppings to their coffee, and each topping can be combined in any order.
+
+The decorator pattern is useful when:
+- You want to add behavior to an object dynamically without affecting other objects of the same class.
+- You want to add behavior to an object that is not possible or feasible to extend using inheritance.
+- You want to be able to remove the added behavior dynamically.
+
+Some use cases of the decorator pattern include:
+- Adding additional functionality to a graphical user interface (GUI) component, such as adding a border or a tooltip.
+- Adding functionality to a text editor, such as adding spell checking or auto-complete.
+- Adding security checks or logging to an existing system.
+
+Overall, the decorator pattern provides a flexible way to add new behavior to an existing object, without affecting the behavior of other objects of the same class.
+
+![img](resources/decorator-1.png)
+
+Imagine that you’re working on a notification library which lets other programs notify their users about important events. At some point, you realize that users of the library expect more than just email notifications. Many of them would like to receive an SMS about critical issues. Others would like to be notified on Facebook and, of course, the corporate users would love to get Slack notifications. And now people want use several notification type at once.
+
+![img](resources/decorator-3.png)
+
+
+By using the decorator pattern in this case could be a good decision because it allows for dynamic behavior and flexibility in adding or modifying the behavior of objects at runtime. Each notification type can be represented as a decorator that adds the necessary behavior to the base notification object. This makes it easy to add new notification types without having to modify the existing code, and it also makes it easy to combine different notification types to create composite notifications. Additionally, it can also help to reduce code duplication and improve maintainability.
+![img](resources/decorator-5.png)
+
+Example 1:
+```
+public interface Notification {
+    void send(String message);
+}
+```
+
+```
+public class EmailNotification implements Notification {
+    @Override
+    public void send(String message) {
+        System.out.println("Sending email notification: " + message);
+    }
+}
+```
+
+```
+public class SmsNotificationDecorator implements Notification {
+    private final Notification notification;
+
+    public SmsNotificationDecorator(Notification notification) {
+        this.notification = notification;
+    }
+
+    @Override
+    public void send(String message) {
+        notification.send(message);
+
+
+        /// Sending SMS Notification Implementation
+        System.out.println("Sending SMS notification: " + message);
+    }
+}
+```
+
+```
+Notification emailNotification = new EmailNotification();
+Notification smsNotification = new SmsNotificationDecorator(emailNotification);
+```
+
+Example 2:
+```
+public interface TextFormatter {
+    String format(String text);
+}
+```
+
+```
+public class PlainTextFormatter implements TextFormatter {
+    @Override
+    public String format(String text) {
+        return text;
+    }
+}
+```
+
+```
+public abstract class TextDecorator implements TextFormatter {
+    private TextFormatter textFormatter;
+
+    public TextDecorator(TextFormatter textFormatter) {
+        this.textFormatter = textFormatter;
+    }
+
+    @Override
+    public String format(String text) {
+        return textFormatter.format(text);
+    }
+}
+```
+
+```
+public class BoldTextDecorator extends TextDecorator {
+    public BoldTextDecorator(TextFormatter textFormatter) {
+        super(textFormatter);
+    }
+
+    @Override
+    public String format(String text) {
+        return "<b>" + super.format(text) + "</b>";
+    }
+}
+```
+
+```
+public class ItalicTextDecorator extends TextDecorator {
+    public ItalicTextDecorator(TextFormatter textFormatter) {
+        super(textFormatter);
+    }
+
+    @Override
+    public String format(String text) {
+        return "<i>" + super.format(text) + "</i>";
+    }
+}
+```
+
+
+
+
 
 ### Facade
 The Facade pattern is a software design pattern that provides a simplified interface to a complex system of classes, interfaces, and APIs. It hides the complexity of the system and provides a simpler interface that the client can use to interact with the system.
